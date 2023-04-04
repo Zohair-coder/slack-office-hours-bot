@@ -1,4 +1,3 @@
-import config
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 
@@ -10,6 +9,7 @@ class SlackBot:
     def post_message(self, channel_name: str, text: str) -> None:
         channel_id = self.get_channel_id_from_name(channel_name)
         try:
+            print("Posting message to channel: {}".format(channel_name))
             response = self.client.chat_postMessage(
                 channel=channel_id, text=text)
             assert response.data.get("ok")
@@ -19,6 +19,7 @@ class SlackBot:
             assert e.response["error"]
 
     def get_channel_id_from_name(self, channel_name: str):
+        print("Getting channel ID for channel name: {}".format(channel_name))
         response = self.client.conversations_list()
         channels = response["channels"]
         for channel in channels:
